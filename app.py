@@ -1,105 +1,25 @@
-import requests
-import base64
-import json
-import pprint
-from urllib.parse import urlencode
 from flask import Flask, request, render_template
-pp = pprint.PrettyPrinter(indent=2)
+from SpotifyAPI import SpotifyAPI
+#pp = pprint.PrettyPrinter(indent=2)
 CLIENT_ID = '9008c46566394946badacf432c783c08'
 CLIENT_SECRET = '85c80468c4234b0bb05db88ea53aed0c'
 
 
-class SpotifyAPI(object):
-    """
-    For interfacing with Spotify API
-    """
-    token_url = 'https://accounts.spotify.com/api/token'
-    access_token = None
-    token_data = None
-    token_headers = None
+app = Flask(__name__)
 
-    def __init__(self, client_id, client_secret):
-        self.client_id = client_id
-        self.client_secret = client_secret
-
-    def get_client_credentials(self):
-        """
-        Returns base 64 encoded client credientials
-        """
-        client_creds_byte = (self.client_id+':'+self.client_secret).encode()
-        client_creds_b64 = str(base64.b64encode(client_creds_byte).decode())
-        return client_creds_b64
-
-    def get_token_headers(self):
-        client_creds_b64 = self.get_client_credentials()
-        authorization_b64 = 'Basic ' + client_creds_b64
-        token_headers = {
-            'Authorization':authorization_b64
-        }
-        return token_headers
-
-    def get_token_data(self):
-        token_data = {
-            'grant_type':'client_credentials',
-        }
-        return token_data
-
-    def auth(self):
-
-        req = requests.post(self.token_url, data=self.get_token_data(), headers=self.get_token_headers())
-
-        if not req.ok:
-            return False
-
-        access_token = req.json()['access_token']
-        self.access_token = access_token
-        return True
-
-    def generate_search_query_str(self, keywords=[]):
-        """
-        Generates a query string
-
-        Adds to string the contents of OR_list seperated by '%20OR%20' 
-        which tells Spotify that its search results should contain any of those strings
-        """
-        query = ""
-        # handle the ORs
-        for keyword in keywords:
-            query += keyword + '%20OR%20'
-        return query
+@app.route('/')
+def form():
+    return render_template('form.html')
 
 
-    def find_playlists(self, keywords=[]):
-        """
-        :param playlist_keywords: list of strings that the the playlist description or title should contain
-                                   if playlist_keywords = ['hardcore', 'punk', 'metal'] then the playlists will limit the search
-                                   such that the playlists returned contain 'hardcore' OR 'punk' OR 'metal'
-
-        Returns a list of popular public playlists that match the query search
-        """       
-        search_endpoint = 'https://api.spotify.com/v1/search'
-
-        headers = {
-            'Authorization': 'Bearer ' + str(self.access_token)
-        }
-
-        query = self.generate_search_query_str(keywords=keywords)
-        request_data = {
-            'q':query,
-            'type':'playlist'
-        }
-        search_url = search_endpoint + '?' +urlencode(request_data)
-        req = requests.get(search_url, headers=headers)
-
-        if not req.ok:
-            return 'Something fucked up. Exit code:{}'.format(eq.status_code)
-
-        return req.json()
-
-sp_client = SpotifyAPI(client_id=CLIENT_ID,client_secret=CLIENT_SECRET)
+#sp_client = SpotifyAPI(client_id=CLIENT_ID,client_secret=CLIENT_SECRET)
 # authenticate and set access_token within object
-sp_client.auth()
+#sp_client.auth()
 
-matching_playlists = sp_client.find_playlists(keywords=['indie','rock'])['playlists']['items']
+#matching_playlists = sp_client.find_playlists(keywords=['indie','rock'])['playlists']['items']
 
-pp.pprint(matching_playlists)
+#pp.pprint(matching_playlists)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
