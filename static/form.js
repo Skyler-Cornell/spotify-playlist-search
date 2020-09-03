@@ -2,5 +2,41 @@
 function submitForm() {
 
     //When user clicks the submit button POST the input to /form
+    enteredText = document.getElementById('keywords').value
+
+    let data = {
+        'enteredText':enteredText
+    };
+
+    xhr = new XMLHttpRequest()
+    xhr.open('POST', '/form')
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+    xhr.send(JSON.stringify(data))
+    xhr.onreadystatechange = requestHandler
+
+    requestHandler = function() {
+        statusCode = xhr.status
+        // transfer complete
+        if(xhr.readyState == 4){
+            window.alert('Sucess!');
+   
+
+            switch(statusCode){
+                case 200:
+                    alert('Sucess!');
+                    break;
+                case 401:
+                    alert('Session has expired');
+                    break;
+                case 500:
+                    alert('Invalid request, check parameters and try again');
+                    break;
+                default:
+                    alert('Something went wrong. Status was: ' + xhr.status);
+                    break;
+            }
+
+        }
+    }
 
 }

@@ -8,8 +8,20 @@ CLIENT_SECRET = '85c80468c4234b0bb05db88ea53aed0c'
 app = Flask(__name__)
 
 @app.route('/')
+@app.route('/form', methods=['POST'])
 def form():
-    return render_template('form.html')
+    if request.method == 'POST':
+
+        print('in hrerer from POST')
+        entered_text = request.get_json(force=True, silent=False)['enteredText']
+        keyword_list = entered_text.split(', ')
+
+        return render_template('test.html')
+
+    else:
+        print('in hrerer from GET')
+        return render_template('form.html')
+
 
 
 #sp_client = SpotifyAPI(client_id=CLIENT_ID,client_secret=CLIENT_SECRET)
