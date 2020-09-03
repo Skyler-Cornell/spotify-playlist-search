@@ -3,7 +3,7 @@ import base64
 import json
 import pprint
 from urllib.parse import urlencode
-
+from flask import Flask, request, render_template
 pp = pprint.PrettyPrinter(indent=2)
 CLIENT_ID = '9008c46566394946badacf432c783c08'
 CLIENT_SECRET = '85c80468c4234b0bb05db88ea53aed0c'
@@ -55,29 +55,44 @@ class SpotifyAPI(object):
         self.access_token = access_token
         return True
 
+    def generate_search_query_str(self, keywords=[]):
+        """
+        Generates a query string
 
-    def find_playlists(self, playlist_keywords):
+        Adds to string the contents of OR_list seperated by '%20OR%20' 
+        which tells Spotify that its search results should contain any of those strings
         """
-        Returns a list of popular public playlists that match the
-        keywords query.
+        query = ""
+        # handle the ORs
+        for keyword in keywords:
+            query += keyword + '%20OR%20'
+        return query
+
+
+    def find_playlists(self, keywords=[]):
         """
-        query = playlist_keywords
-        endpoint_url = 'https://api.spotify.com/v1/search'
+        :param playlist_keywords: list of strings that the the playlist description or title should contain
+                                   if playlist_keywords = ['hardcore', 'punk', 'metal'] then the playlists will limit the search
+                                   such that the playlists returned contain 'hardcore' OR 'punk' OR 'metal'
+
+        Returns a list of popular public playlists that match the query search
+        """       
+        search_endpoint = 'https://api.spotify.com/v1/search'
 
         headers = {
             'Authorization': 'Bearer ' + str(self.access_token)
         }
+
+        query = self.generate_search_query_str(keywords=keywords)
         request_data = {
             'q':query,
             'type':'playlist'
         }
-
-        search_url = endpoint_url + '?' +urlencode(request_data)
-
+        search_url = search_endpoint + '?' +urlencode(request_data)
         req = requests.get(search_url, headers=headers)
 
         if not req.ok:
-            return req.status_code
+            return 'Something fucked up. Exit code:{}'.format(eq.status_code)
 
         return req.json()
 
@@ -85,6 +100,6 @@ sp_client = SpotifyAPI(client_id=CLIENT_ID,client_secret=CLIENT_SECRET)
 # authenticate and set access_token within object
 sp_client.auth()
 
-playlist_data = sp_client.find_playlists(playlist_keywords='skating')['playlists']['items'][0]
+matching_playlists = sp_client.find_playlists(keywords=['indie','rock'])['playlists']['items']
 
-pp.pprint(playlist_data)
+pp.pprint(matching_playlists)
