@@ -66,7 +66,8 @@ class SpotifyAPI(object):
         # handle the ORs
         for keyword in keywords:
             query += keyword + '%20OR%20'
-        return query
+        # return string with the final '%20OR%20' removed from end
+        return query[:-8]
 
 
     def find_playlists(self, keywords=[]):
@@ -80,14 +81,17 @@ class SpotifyAPI(object):
         search_endpoint = 'https://api.spotify.com/v1/search'
 
         headers = {
+            'Accept':'application/json',
+            'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + str(self.access_token)
         }
 
         query = self.generate_search_query_str(keywords=keywords)
         search_url = search_endpoint + '?'+'q='+query+'&type=playlist'
+        print(search_url)
         req = requests.get(search_url, headers=headers)
 
         if not req.ok:
-            return 'Something fucked up. Exit code:{}'.format(eq.status_code)
+            return 'Something fucked up. Exit code:{}'.format(req.status_code)
 
         return req.json()
