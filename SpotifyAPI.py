@@ -84,11 +84,7 @@ class SpotifyAPI(object):
         }
 
         query = self.generate_search_query_str(keywords=keywords)
-        request_data = {
-            'q':query,
-            'type':'playlist'
-        }
-        search_url = search_endpoint + '?' +urlencode(request_data)
+        search_url = search_endpoint + '?'+'q='+query+'&type=playlist'
         req = requests.get(search_url, headers=headers)
 
         if not req.ok:
