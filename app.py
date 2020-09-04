@@ -1,27 +1,20 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for, flash, jsonify
 from SpotifyAPI import SpotifyAPI
 #pp = pprint.PrettyPrinter(indent=2)
 CLIENT_ID = '9008c46566394946badacf432c783c08'
 CLIENT_SECRET = '85c80468c4234b0bb05db88ea53aed0c'
 
-
 app = Flask(__name__)
 
-@app.route('/')
 @app.route('/form', methods=['POST'])
 def form():
-    if request.method == 'POST':
+    print('IN HERE FROM POST')
+    print(request.form)
+    return redirect(url_for('home'))
 
-        print('in hrerer from POST')
-        entered_text = request.get_json(force=True, silent=False)['enteredText']
-        keyword_list = entered_text.split(', ')
-
-        return render_template('test.html')
-
-    else:
-        print('in hrerer from GET')
-        return render_template('form.html')
-
+@app.route('/')
+def home():
+    return render_template('form.html')
 
 
 #sp_client = SpotifyAPI(client_id=CLIENT_ID,client_secret=CLIENT_SECRET)

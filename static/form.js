@@ -14,11 +14,11 @@ function submitForm() {
     xhr.send(JSON.stringify(data))
     xhr.onreadystatechange = requestHandler
 
-    requestHandler = function() {
+    function requestHandler() {
         statusCode = xhr.status
         // transfer complete
         if(xhr.readyState == 4){
-            window.alert('Sucess!');
+            console.log('Sucess!');
    
 
             switch(statusCode){

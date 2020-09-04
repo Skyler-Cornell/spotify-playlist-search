@@ -11,9 +11,11 @@
     <br>
     <br>
 
-    <label>Enter comma seperates keywords</label>
-    <input type="text" id="keywords">
-    <input type="button" value='Find Playlists' onclick="submitForm()">
+    <form action="/form" method="POST">
+        <label>Enter comma seperates keywords</label>
+        <input type="text" name='bar'>
+        <input type="submit" value='Find Playlists'/>    
+    </form>
 
     <ul id='playlist-list'>
         {% for word in word_list %}
