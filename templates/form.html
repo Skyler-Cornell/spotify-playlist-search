@@ -17,9 +17,18 @@
         <input type="submit" value='Find Playlists'/>    
     </form>
 
-    <ul id='playlist-list' style="font-family:'Courier New'; text-align:center;">
-        {% for playlist_name in playlist_names %}
-            <li>{{playlist_name}}</li>
+    <ul id='playlist-list' style="font-family:'Courier New'; text-align:left;">
+        {% for playlist in playlists %}
+            <hr>
+            <br>
+            <li><strong>Playlist Name: </strong>{{playlist.name}}</li>
+            <li><strong>Owner Display Name: </strong>{{playlist.owner.display_name}}</li>
+            <li><strong>Playlist Description: </strong>{{playlist.description}}</li>
+            <li><a href={{playlist.external_urls.spotify}}>Link to Playlist</a></li>
+
+            <br>
+
+
         {% endfor %}
     </ul>
     

@@ -19,15 +19,8 @@ def form():
     # do spotify stuff with the keuwords
     spotify.auth()
     playlists = spotify.find_playlists(keywords_list)['playlists']['items']
-    playlist_names = []
-    playlist_owners = []
-    playlist_descriptions = []
 
-    for playlist in playlists:
-        playlist_names.append(playlist['name'])
-        playlist_owners.append(playlist['owner'])
-        playlist_descriptions.append(playlist['description'])
-    return render_template('form.html', playlist_names=playlist_names, playlist_owners=playlist_owners, playlist_descriptions=playlist_descriptions)
+    return render_template('form.html', playlists=playlists)
 
 
 @app.route('/')
