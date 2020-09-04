@@ -7,19 +7,19 @@
     <title>Playlist Finder</title>
 </head>
 <body>
-    <h1 style="font-family:'Courier New'" style="text-align: center;" f>Popular Spotify Playlist Finder</h1>
+    <h1 style="font-family:'Courier New'; text-align:center;">Popular Spotify Playlist Finder</h1>
     <br>
     <br>
 
-    <form action="/form" method="POST">
-        <label>Enter comma seperates keywords</label>
-        <input type="text" name='bar'>
+    <form action="/form" method="POST" style="font-family:'Courier New'; text-align:center;">
+        <label>Enter comma seperated keywords</label>
+        <input type="text" name='keywords-single-str'>
         <input type="submit" value='Find Playlists'/>    
     </form>
 
-    <ul id='playlist-list'>
-        {% for word in word_list %}
-            <li>{{word}}</li>
+    <ul id='playlist-list' style="font-family:'Courier New'; text-align:center;">
+        {% for playlist_name in playlist_names %}
+            <li>{{playlist_name}}</li>
         {% endfor %}
     </ul>
     
