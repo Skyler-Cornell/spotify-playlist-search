@@ -4,12 +4,11 @@ SpotifyAPI is a class for making various Spotify API requests
 import requests
 import base64
 import json
-import pprint
 from urllib.parse import urlencode
 
 class SpotifyAPI(object):
     """
-    For interfacing with Spotify API
+    For interfacing with Spotify API YEEHAW
     """
     token_url = 'https://accounts.spotify.com/api/token'
     access_token = None
@@ -96,4 +95,3 @@ class SpotifyAPI(object):
             return 'Something fucked up. Exit code:{}'.format(eq.status_code)
 
         return req.json()
-

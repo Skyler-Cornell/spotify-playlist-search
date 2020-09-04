@@ -16,25 +16,15 @@ def form():
     entered_text = request.form['keywords-single-str']
     keywords_list = entered_text.split(',')
 
-    # do spotify stuff with the keuwords
+    # do spotify search from keywords
     spotify.auth()
     playlists = spotify.find_playlists(keywords_list)['playlists']['items']
-
+    # update UI with the playlist info
     return render_template('form.html', playlists=playlists)
-
 
 @app.route('/')
 def home():
     return render_template('form.html')
-
-
-#sp_client = SpotifyAPI(client_id=CLIENT_ID,client_secret=CLIENT_SECRET)
-# authenticate and set access_token within object
-#sp_client.auth()
-
-#matching_playlists = sp_client.find_playlists(keywords=['indie','rock'])['playlists']['items']
-
-#pp.pprint(matching_playlists)
 
 
 if __name__ == "__main__":
