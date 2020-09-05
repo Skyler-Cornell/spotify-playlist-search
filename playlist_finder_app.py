@@ -1,14 +1,16 @@
 from flask import Flask, request, render_template, redirect, url_for, flash, jsonify
 from SpotifyAPI import SpotifyAPI
 import pprint
+from config import *
 
 pp = pprint.PrettyPrinter(indent=2)
-CLIENT_ID = '9008c46566394946badacf432c783c08'
-CLIENT_SECRET = '85c80468c4234b0bb05db88ea53aed0c'
+
+SPOTIFY_CLIENT_ID = SPOTIFY_CLIENT_ID
+SPOTIFY_CLIENT_SECRET = SPOTIFY_CLIENT_SECRET
 
 app = Flask(__name__)
 
-spotify = SpotifyAPI(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+spotify = SpotifyAPI(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET)
 
 @app.route('/form', methods=['POST'])
 def form():
